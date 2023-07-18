@@ -4,8 +4,9 @@ const cors = require('cors');
 const Schema = require("./Schema/Scores")
 const os = require('os');
 const fs = require('fs');
+const fetch = require('cross-fetch')
 const networkInterfaces = os.networkInterfaces();
-const ipAddress = networkInterfaces['Ethernet 3'][0]['address'];
+const ipAddress = networkInterfaces['Wi-Fi'][4]['address'];
 const {join} = require("path");
 const connectionString = "mongodb+srv://7034:7034@cluster0.swlcios.mongodb.net/gobuildacomp?retryWrites=true&w=majority"
 const app = express();
