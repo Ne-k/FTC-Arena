@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import ipConfig from '../ip.json';
 import '../App.css';
 
-const ScoreBox = ({ label, score, onIncrement, onDecrement }) => (
+const ScoreBox = ({ label, score, onIncrement, onDecrement, onScoreChange }) => (
     <div>
         <h2>{label}</h2>
         <button onClick={onIncrement}>↑</button>
-        <span>{score}</span>
+        <input
+            type="number"
+            value={score}
+            onChange={e => onScoreChange(parseInt(e.target.value))}
+            style={{ width: '3rem', textAlign: 'center' }}
+        />
         <button onClick={onDecrement}>↓</button>
     </div>
 );
+
 
 const MatchBox = ({ matchNumber = 0, onIncrement, onDecrement }) => (
     <div
@@ -117,6 +123,11 @@ const ScoringPage = () => {
         updateScore(team, -1);
     };
 
+    const handleScoreChange = (team, newScore) => {
+        setScores(scores => ({ ...scores, [team]: newScore }));
+        updateScore(team, newScore - scores[team]);
+    };
+
     const updateScore = (team, change) => {
         if (!matchId) return;
         // Update the score in the database
@@ -187,12 +198,14 @@ const ScoringPage = () => {
                             score={scores.red1}
                             onIncrement={() => handleIncrement('red1')}
                             onDecrement={() => handleDecrement('red1')}
+                            onScoreChange={newScore => handleScoreChange('red1', newScore)}
                         />
                         <ScoreBox
                             label="Red 2"
                             score={scores.red2}
                             onIncrement={() => handleIncrement('red2')}
                             onDecrement={() => handleDecrement('red2')}
+                            onScoreChange={newScore => handleScoreChange('red2', newScore)}
                         />
                     </>
                 )}
@@ -227,12 +240,14 @@ const ScoringPage = () => {
                             score={scores.blue1}
                             onIncrement={() => handleIncrement('blue1')}
                             onDecrement={() => handleDecrement('blue1')}
+                            onScoreChange={newScore => handleScoreChange('blue1', newScore)}
                         />
                         <ScoreBox
                             label="Blue 2"
                             score={scores.blue2}
                             onIncrement={() => handleIncrement('blue2')}
                             onDecrement={() => handleDecrement('blue2')}
+                            onScoreChange={newScore => handleScoreChange('blue2', newScore)}
                         />
                     </>
                 )}
